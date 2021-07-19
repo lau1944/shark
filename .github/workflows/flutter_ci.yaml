@@ -27,7 +27,6 @@ jobs:
     
     # Get flutter dependencies.
     - run: flutter pub get
-    - run: flutter pub run build_runner build
     
     # Check for any formatting issues in the code.
     - run: flutter format --set-exit-if-changed .
