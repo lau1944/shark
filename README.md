@@ -1,4 +1,4 @@
-# Share Flutter 🦈 (Under Construction)
+# Shark Flutter 🦈 (Under Construction)
 
 [![codecov](https://codecov.io/gh/lau1944/shark/branch/dev/graph/badge.svg?token=USH2YH4BK1)](https://codecov.io/gh/lau1944/shark)
 
