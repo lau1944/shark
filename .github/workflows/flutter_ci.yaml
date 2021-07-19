@@ -37,6 +37,6 @@ jobs:
     
     # Run test with coverage
     - name: Run tests
-    - run: flutter test --coverage
+      run: flutter test --coverage
   
   
