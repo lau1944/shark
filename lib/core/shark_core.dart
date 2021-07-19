@@ -16,6 +16,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 ///   runApp(MyApp());
 /// }
 class Shark {
+
+  Shark._();
+
   /// init shark client
   /// see also [_SharkCore.init]
   static Future<void> init(
@@ -27,6 +30,7 @@ class Shark {
   }
 }
 
+/// Share library core method
 class _ShareCore {
   _ShareCore._();
 
@@ -45,31 +49,35 @@ class _ShareCore {
   /// build device info string, in order to push it as headers on api client
   Future<String> _buildDeviceInfo() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      final info = await deviceInfo.androidInfo;
-      return _deviceMetaBuild('android', info.androidId, info.model);
-    } else if (Platform.isIOS) {
-      final info = await deviceInfo.iosInfo;
-      return _deviceMetaBuild('ios', info.name, info.model);
-    } else if (Platform.isMacOS) {
-      final info = await deviceInfo.macOsInfo;
-      return _deviceMetaBuild('mac', info.computerName, info.model);
-    } else if (Platform.isLinux) {
-      final info = await deviceInfo.linuxInfo;
-      return _deviceMetaBuild('linux', info.id, info.machineId);
-    } else if (Platform.isWindows) {
-      final info = await deviceInfo.windowsInfo;
-      return _deviceMetaBuild('windows', info.computerName, info.computerName);
-    } else if (kIsWeb) {
-      final info = await deviceInfo.webBrowserInfo;
-      return _deviceMetaBuild('web', info.userAgent, '');
-    }
+    try {
+      if (Platform.isAndroid) {
+        final info = await deviceInfo.androidInfo;
+        return _deviceMetaBuild('android', info.androidId, info.model);
+      } else if (Platform.isIOS) {
+        final info = await deviceInfo.iosInfo;
+        return _deviceMetaBuild('ios', info.name, info.model);
+      } else if (Platform.isMacOS) {
+        final info = await deviceInfo.macOsInfo;
+        return _deviceMetaBuild('mac', info.computerName, info.model);
+      } else if (Platform.isLinux) {
+        final info = await deviceInfo.linuxInfo;
+        return _deviceMetaBuild('linux', info.id, info.machineId);
+      } else if (Platform.isWindows) {
+        final info = await deviceInfo.windowsInfo;
+        return _deviceMetaBuild('windows', info.computerName, info.computerName);
+      } else if (kIsWeb) {
+        final info = await deviceInfo.webBrowserInfo;
+        return _deviceMetaBuild('web', info.userAgent, '');
+      }
 
-    return _deviceMetaBuild('others', '', '');
+      return _deviceMetaBuild('others', '', '');
+    } catch (e) {
+      return 'unknown';
+    }
   }
 
   String _deviceMetaBuild(String platform, String? deviceId, String? model) {
-    return '$platform-$deviceId-$model';
+    return '';
   }
 
   /// init shark network client
