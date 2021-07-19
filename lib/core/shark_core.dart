@@ -22,23 +22,22 @@ class Shark {
   /// init shark client
   /// see also [_SharkCore.init]
   /// [remoteConfig] config for network client
-  /// [interceptors] a collections of network interceptors
   static Future<void> init({
     required String hostUrl,
     RemoteConfig? remoteConfig,
-    List<Interceptor>? interceptors,
     SharkErrorFunction? onError,
   }) {
-    return _ShareCore.instance
-        .init(hostUrl, remoteConfig: remoteConfig, interceptors: interceptors);
+    return _ShareCore.instance.init(hostUrl,
+        remoteConfig: remoteConfig, interceptors: remoteConfig?.interceptors);
   }
 }
 
 /// Share library core method
 class _ShareCore {
-
   _ShareCore._();
+
   static _ShareCore instance = _ShareCore._();
+
   factory _ShareCore() => instance;
 
   /// check if shark has initialized before
@@ -57,8 +56,7 @@ class _ShareCore {
     String deviceInfo = await _buildDeviceInfo();
 
     // add error report
-    if (onError != null)
-      _addErrorReport(onError);
+    if (onError != null) _addErrorReport(onError);
 
     // network client init
     await _initApiClient(hostUrl, deviceInfo,
