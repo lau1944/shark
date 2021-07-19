@@ -14,5 +14,20 @@ void main() {
         },
       ),
     );
+
+    Shark.init(
+      hostUrl: 'https://google.com',
+    );
+
+    Shark.init(
+      hostUrl: 'https://google.com',
+      remoteConfig: RemoteConfig(
+        timeout: 20000,
+        headers: {
+          'testHeader': 'from Shark',
+        },
+      ),
+      interceptors: []
+    );
   });
 }

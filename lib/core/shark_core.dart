@@ -77,7 +77,7 @@ class _ShareCore {
   }
 
   String _deviceMetaBuild(String platform, String? deviceId, String? model) {
-    return '';
+    return '$platform-$deviceId-$model';
   }
 
   /// init shark network client
