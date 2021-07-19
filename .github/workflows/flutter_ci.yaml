@@ -12,13 +12,16 @@ on:
     branches: [ dev ]
 
 jobs:
-  build:
+  test:
     # This job will run on ubuntu virtual machine
     runs-on: macos-latest
     steps:
     
+    - name: Checkout the code
+      uses: actions/checkout@v2
+    
     # Setup the flutter environment.
-    - uses: subosito/flutter-action@v1
+    - uses: subosito/flutter-action@v1.4.0
       with:
         channel: 'stable' # 'dev', 'alpha', default to: 'stable'
     
