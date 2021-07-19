@@ -14,9 +14,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    with:
-      java-version: '12.x'
     
     # Setup the flutter environment.
     - uses: actions/checkout@v1
