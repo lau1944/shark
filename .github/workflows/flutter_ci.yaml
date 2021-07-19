@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Dart
+name: Flutter_ci
 
 on:
   push:
@@ -20,11 +20,11 @@ jobs:
     # Setup the flutter environment.
     - uses: subosito/flutter-action@v1
       with:
-        channel: 'beta' # 'dev', 'alpha', default to: 'stable'
-        # flutter-version: '1.12.x' # you can also specify exact version of flutter
+        channel: 'stable' # 'dev', 'alpha', default to: 'stable'
     
     # Get flutter dependencies.
     - run: flutter pub get
+    - run: flutter pub run build_runner build
     
     # Check for any formatting issues in the code.
     - run: flutter format --set-exit-if-changed .
@@ -32,6 +32,11 @@ jobs:
     # Statically analyze the Dart code for any errors.
     - run: flutter analyze .
     
-    # Run widget tests for our flutter project.
-    - run: flutter test
+    # Run test with coverage
+    - name: Run tests
+    run: flutter test --coverage
+    
+    name: Upload coverage to codecov
+    run: curl -s https://codecov.io/bash
+    shell: bash
   
