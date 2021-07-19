@@ -14,7 +14,7 @@ on:
 jobs:
   build:
     # This job will run on ubuntu virtual machine
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     
     # Setup the flutter environment.
@@ -35,8 +35,5 @@ jobs:
     # Run test with coverage
     - name: Run tests
     - run: flutter test --coverage
-    
-    - name: Upload coverage to codecov
-    - run: curl -s https://codecov.io/bash
-    - env: bash
+  
   
