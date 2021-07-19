@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:shark/core/share_error.dart';
 import 'package:shark/models/remote_config.dart';
 import 'package:shark/service/api_client.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -10,21 +11,24 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 /// in order to make shark starts, you need to add [Shark.init] before flutter app run
 ///
 /// Sample :
-/// void main(List args) {
-///   await Shark.init('https:google.com');
+/// void main(List args) async {
+///   await Shark.init('https://google.com');
 ///
 ///   runApp(MyApp());
 /// }
 class Shark {
-
   Shark._();
 
   /// init shark client
   /// see also [_SharkCore.init]
-  static Future<void> init(
-      {required String hostUrl,
-      RemoteConfig? remoteConfig,
-      List<Interceptor>? interceptors}) {
+  /// [remoteConfig] config for network client
+  /// [interceptors] a collections of network interceptors
+  static Future<void> init({
+    required String hostUrl,
+    RemoteConfig? remoteConfig,
+    List<Interceptor>? interceptors,
+    ShareErrorFunction? onError,
+  }) {
     return _ShareCore.instance
         .init(hostUrl, remoteConfig: remoteConfig, interceptors: interceptors);
   }
@@ -32,18 +36,40 @@ class Shark {
 
 /// Share library core method
 class _ShareCore {
+
   _ShareCore._();
-
   static _ShareCore instance = _ShareCore._();
-
   factory _ShareCore() => instance;
 
+  /// check if shark has initialized before
+  bool _hasInitialized = false;
+
   /// init shark client
-  Future<void> init(String hostUrl,
-      {RemoteConfig? remoteConfig, List<Interceptor>? interceptors}) async {
+  Future<void> init(
+    String hostUrl, {
+    RemoteConfig? remoteConfig,
+    List<Interceptor>? interceptors,
+    ShareErrorFunction? onError,
+  }) async {
+    if (_hasInitialized) throw SharkError('Shark has already been initialized');
+
+    // get device info string in format
     String deviceInfo = await _buildDeviceInfo();
+
+    // add error report
+    if (onError != null)
+      _addErrorReport(onError);
+
+    // network client init
     await _initApiClient(hostUrl, deviceInfo,
         remoteConfig: remoteConfig, interceptors: interceptors);
+
+    _hasInitialized = true;
+  }
+
+  /// add new error report function
+  void _addErrorReport(ShareErrorFunction errorFunction) {
+    SharkReport.addErrorReport(errorFunction);
   }
 
   /// build device info string, in order to push it as headers on api client
@@ -64,7 +90,8 @@ class _ShareCore {
         return _deviceMetaBuild('linux', info.id, info.machineId);
       } else if (Platform.isWindows) {
         final info = await deviceInfo.windowsInfo;
-        return _deviceMetaBuild('windows', info.computerName, info.computerName);
+        return _deviceMetaBuild(
+            'windows', info.computerName, info.computerName);
       } else if (kIsWeb) {
         final info = await deviceInfo.webBrowserInfo;
         return _deviceMetaBuild('web', info.userAgent, '');
@@ -72,6 +99,7 @@ class _ShareCore {
 
       return _deviceMetaBuild('others', '', '');
     } catch (e) {
+      // SharkReport.report(e);
       return 'unknown';
     }
   }

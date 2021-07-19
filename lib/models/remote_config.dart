@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
 
 /// network client configuration
+/// [timeout] time out on connection
+/// [headers] headers for network request
+/// [queryParams] params for network request
 class RemoteConfig {
   final int? timeout;
   final Map<String, dynamic>? headers;
