@@ -27,7 +27,7 @@ class Shark {
     required String hostUrl,
     RemoteConfig? remoteConfig,
     List<Interceptor>? interceptors,
-    ShareErrorFunction? onError,
+    SharkErrorFunction? onError,
   }) {
     return _ShareCore.instance
         .init(hostUrl, remoteConfig: remoteConfig, interceptors: interceptors);
@@ -49,7 +49,7 @@ class _ShareCore {
     String hostUrl, {
     RemoteConfig? remoteConfig,
     List<Interceptor>? interceptors,
-    ShareErrorFunction? onError,
+    SharkErrorFunction? onError,
   }) async {
     if (_hasInitialized) throw SharkError('Shark has already been initialized');
 
@@ -68,7 +68,7 @@ class _ShareCore {
   }
 
   /// add new error report function
-  void _addErrorReport(ShareErrorFunction errorFunction) {
+  void _addErrorReport(SharkErrorFunction errorFunction) {
     SharkReport.addErrorReport(errorFunction);
   }
 

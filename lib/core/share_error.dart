@@ -1,18 +1,28 @@
 
 import 'dart:async';
 
-typedef void ShareErrorFunction(error, String? message);
+typedef void SharkErrorFunction(error, String? message);
 
-ShareErrorFunction get onError => (err, message) {
+/// default error report callback function
+SharkErrorFunction get onError => (err, message) {
   print(err.toString());
   throw SharkError(message ?? err.toString());
 };
 
+/// error report delegation, use this to report every exception
+/// [report] method would transform error type to [SharkError]
+/// 
+/// sample: 
+/// try {
+///   xxx
+/// } catch (e) {
+///   SharkReport.report(e, 'it's an error');
+/// }
 class SharkReport {
 
-  static List<ShareErrorFunction> _errorReports = [onError];
+  static List<SharkErrorFunction> _errorReports = [onError];
 
-  static addErrorReport(ShareErrorFunction errorFunction) {
+  static addErrorReport(SharkErrorFunction errorFunction) {
     _errorReports.add(errorFunction);
   }
 
