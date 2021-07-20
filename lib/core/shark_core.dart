@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:shark/core/share_error.dart';
+import 'package:shark/models/cache_strategy.dart';
 import 'package:shark/models/remote_config.dart';
 import 'package:shark/service/api_client.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -26,9 +27,12 @@ class Shark {
     required String hostUrl,
     RemoteConfig? remoteConfig,
     SharkErrorFunction? onError,
+    CacheStrategy? cacheStrategy,
   }) {
     return _ShareCore.instance.init(hostUrl,
-        remoteConfig: remoteConfig, interceptors: remoteConfig?.interceptors);
+        remoteConfig: remoteConfig,
+        interceptors: remoteConfig?.interceptors,
+        cacheStrategy: cacheStrategy);
   }
 }
 
@@ -49,6 +53,7 @@ class _ShareCore {
     RemoteConfig? remoteConfig,
     List<Interceptor>? interceptors,
     SharkErrorFunction? onError,
+    CacheStrategy? cacheStrategy,
   }) async {
     if (_hasInitialized) throw SharkError('Shark has already been initialized');
 
