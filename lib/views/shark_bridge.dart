@@ -8,4 +8,4 @@ import 'package:dynamic_widget/dynamic_widget.dart';
 abstract class SharkParser extends WidgetParser {}
 
 /// On click event callback
-typedef void ClickEvent(String event);
+typedef void ClickEvent(String? event);

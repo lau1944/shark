@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:shark/core/share_error.dart';
 import 'package:shark/core/shark_core.dart';
 import 'package:shark/models/enum.dart';
-import 'package:shark/models/remote_config.dart';
 import 'package:shark/models/result.dart';
 import 'package:shark/service/api_client.dart';
 import 'package:shark/service/service_repository.dart';
@@ -38,7 +37,7 @@ class SharkController extends ChangeNotifier {
   late final StreamController<SharkWidgetState> _streamController;
 
   SharkController({required this.path, this.headers, this.queryParams}) {
-    _streamController = StreamController();
+    _streamController = StreamController()..add(_state);
   }
 
   /// Get current result value
@@ -71,6 +70,8 @@ class SharkController extends ChangeNotifier {
       SharkReport.report(result.exception, result.message);
       _updateState(SharkWidgetState.error);
     }
+
+    notifyListeners();
   }
 
   /// Get current state in stream

@@ -10,6 +10,7 @@ mixin SharkWidgetMixin<T extends StatefulWidget> on State<T> {
     super.initState();
   }
 
+  /// Request UI method
   void requestWidget();
 
 }
