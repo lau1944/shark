@@ -23,6 +23,7 @@ class Shark {
   /// init shark client
   /// see also [_SharkCore.init]
   /// [remoteConfig] config for network client
+  /// [cacheStrategy] the strategy for json data caching
   static Future<void> init({
     required String hostUrl,
     RemoteConfig? remoteConfig,
@@ -34,6 +35,9 @@ class Shark {
         interceptors: remoteConfig?.interceptors,
         cacheStrategy: cacheStrategy);
   }
+
+  /// Check if the shark library has been initialized
+  static get isInitialized => _ShareCore()._hasInitialized;
 }
 
 /// Share library core method

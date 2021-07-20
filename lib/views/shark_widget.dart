@@ -3,7 +3,7 @@ import 'package:shark/models/remote_config.dart';
 import 'package:shark/views/shark_controller.dart';
 import 'package:shark/views/shark_widget_mixin.dart';
 
-/// Entry widget for dynamic widget
+/// Entry point for user to create shark widget
 /// use [SharkController] to interact with UI components
 class SharkWidget extends StatefulWidget {
   const SharkWidget(
