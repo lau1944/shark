@@ -4,4 +4,5 @@
 
 A Flutter server rendering framework 
 
-Welcome to contribute your code !!!
+
+After i finish the project structure, I would draw a project diagram and dev roadmap. At that time, welcome to contribute your code !!!
