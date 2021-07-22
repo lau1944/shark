@@ -18,8 +18,8 @@ class SharkWidget extends StatefulWidget {
       Key? key})
       : super(key: key);
 
-  final ClickEvent? clickEvent;
   final SharkController controller;
+  final ClickEvent? clickEvent;
   final Widget? initWidget;
   final Widget? loadingWidget;
   final Widget? errorWidget;

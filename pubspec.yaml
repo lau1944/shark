@@ -13,11 +13,15 @@ dependencies:
   dio: ^4.0.0
   device_info_plus: ^2.1.0
   dynamic_widget: ^4.0.1
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  hive_generator: ^1.1.0
+  build_runner: ^2.0.6
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
