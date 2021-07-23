@@ -64,8 +64,6 @@ class _SharkWidgetState extends State<SharkWidget> with SharkWidgetMixin {
   bool _isFetchingWidget(SharkWidgetState state) =>
       state == SharkWidgetState.loading;
 
-  bool _iWidgetError(SharkWidgetState state) => state == SharkWidgetState.error;
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(

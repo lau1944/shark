@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:shark/models/cache_strategy.dart';
 import 'package:shark/models/constant.dart';
 import 'package:shark/models/remote_config.dart';
+import 'package:shark/service/interceptors/data_interceptor.dart';
 
 class ApiClient {
   ApiClient._();
@@ -13,9 +15,13 @@ class ApiClient {
 
   /// init api client
   Future<void> init(String baseUrl, String deviceInfo,
-      {RemoteConfig? remoteConfig, List<Interceptor>? interceptors}) async {
+      {RemoteConfig? remoteConfig,
+        List<Interceptor>? interceptors,
+        CacheStrategy? cacheStrategy}) async {
     remoteConfig ??= _defaultConfig;
     final headers = remoteConfig.headers ?? {};
+
+    // put shark identifier header
     _insertSharkHeader(
       headers..putIfAbsent('deviceInfo', () => deviceInfo),
     );
@@ -31,14 +37,25 @@ class ApiClient {
       ),
     );
 
+    _addInterceptors(interceptors, cacheStrategy);
+  }
+
+  void _addInterceptors(List<Interceptor>? interceptors,
+      [CacheStrategy? strategy]) {
     if (interceptors != null) {
       _dio.interceptors.addAll(interceptors);
+    }
+
+    if (strategy != null) {
+      _dio.interceptors.add(
+        DataInterceptor(cacheStrategy: strategy),
+      );
     }
   }
 
   /// http get method
   Future<Response> get(String path,
-          {Map<String, dynamic>? params, Options? options}) =>
+      {Map<String, dynamic>? params, Options? options}) =>
       _dio.get(path, queryParameters: params, options: options);
 
   /// http post method

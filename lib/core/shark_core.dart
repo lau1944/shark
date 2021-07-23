@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:shark/core/cache_manager.dart';
 import 'package:shark/core/share_error.dart';
 import 'package:shark/models/cache_strategy.dart';
 import 'package:shark/models/remote_config.dart';
@@ -69,9 +70,18 @@ class _ShareCore {
 
     // network client init
     await _initApiClient(hostUrl, deviceInfo,
-        remoteConfig: remoteConfig, interceptors: interceptors);
+        remoteConfig: remoteConfig,
+        interceptors: interceptors,
+        cacheStrategy: cacheStrategy);
+
+    // cache client init
+    await _initCacheManager(cacheStrategy);
 
     _hasInitialized = true;
+  }
+
+  Future<void> _initCacheManager(CacheStrategy? cacheStrategy) async {
+    return await CacheManager.init(strategy: cacheStrategy ?? CacheStrategy());
   }
 
   /// add new error report function
@@ -117,8 +127,12 @@ class _ShareCore {
 
   /// init shark network client
   Future<void> _initApiClient(String hostUrl, String deviceInfo,
-      {RemoteConfig? remoteConfig, List<Interceptor>? interceptors}) async {
+      {RemoteConfig? remoteConfig,
+      List<Interceptor>? interceptors,
+      CacheStrategy? cacheStrategy}) async {
     return await ApiClient.instance.init(hostUrl, deviceInfo,
-        remoteConfig: remoteConfig, interceptors: interceptors);
+        remoteConfig: remoteConfig,
+        interceptors: interceptors,
+        cacheStrategy: cacheStrategy);
   }
 }

@@ -46,8 +46,8 @@ class CacheManager {
     // find all the element fits the requirement
     if (_storageService is HiveService) {
       (_storageService as HiveService).forEach((key, value) {
-        if (value[dbDateKey] != null &&
-            isDateExpired(value[dbDateKey], maxDuration.inMilliseconds)) {
+        if (value[DB_DATE_KEY] != null &&
+            isDateExpired(value[DB_DATE_KEY], maxDuration.inMilliseconds)) {
           garbageKey.add(key);
         }
       });
@@ -59,11 +59,11 @@ class CacheManager {
   }
 
   /// Remove the last couple of exceeded data
-  static Future<void> _removeLastOf(int excludeCount) async {
+  /*static Future<void> _removeLastOf(int excludeCount) async {
     if (_storageService is HiveService) {
       await (_storageService as HiveService).deleteLastOf(excludeCount);
     }
-  }
+  }*/
 
   /// Remove the least unused exceeded data
   static Future<void> _removeFirstOf(int excludeCount) async {

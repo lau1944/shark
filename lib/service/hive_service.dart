@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:shark/core/share_error.dart';
 import 'package:shark/service/storage_service.dart';
 

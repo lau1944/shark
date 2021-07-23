@@ -20,15 +20,4 @@ void main() {
       }
     );
   });
-
-  test('TestCache', () async {
-    await CacheManager.init(strategy: CacheStrategy());
-    await CacheManager.push('https://google.com', {
-      'last_saved_date': DateTime.now().millisecondsSinceEpoch,
-      'widget': 'type: container: {}',
-    });
-    final data = await CacheManager.get('https://google.com');
-    expect(data['widget'], 'type: container: {}');
-
-  });
 }

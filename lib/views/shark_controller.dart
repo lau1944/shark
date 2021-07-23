@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shark/core/share_error.dart';
 import 'package:shark/core/shark_core.dart';
+import 'package:shark/models/constant.dart';
 import 'package:shark/models/enum.dart';
 import 'package:shark/models/result.dart';
 import 'package:shark/service/api_client.dart';
@@ -20,7 +21,7 @@ class SharkController extends ChangeNotifier {
   final String path;
 
   /// Request network headers, will merge to [ApiClient] headers
-  final Map<String, dynamic>? headers;
+  Map<String, dynamic> headers = {};
 
   /// Request network params
   final Map<String, dynamic>? queryParams;
@@ -36,7 +37,8 @@ class SharkController extends ChangeNotifier {
 
   late final StreamController<SharkWidgetState> _streamController;
 
-  SharkController({required this.path, this.headers, this.queryParams}) {
+  SharkController(
+      {required this.path, this.headers = const {}, this.queryParams}) {
     _streamController = StreamController()..add(_state);
   }
 
@@ -53,6 +55,10 @@ class SharkController extends ChangeNotifier {
     _updateState(SharkWidgetState.loading);
     assert(Shark.isInitialized);
 
+    // put widget request tag to header
+    // in order to identify if it's widget request
+    _putWidgetRequestTag();
+
     final repository = _serviceRepository;
     // fetch ui here
     final result = await repository.get(
@@ -64,14 +70,16 @@ class SharkController extends ChangeNotifier {
     if (result is Success) {
       _resultJson = result.data;
       _updateState(SharkWidgetState.success);
-    }
-
-    else if (result is Error) {
+    } else if (result is Error) {
       SharkReport.report(result.exception, result.message);
       _updateState(SharkWidgetState.error);
     }
 
     notifyListeners();
+  }
+
+  void _putWidgetRequestTag() {
+    headers.addAll({ WIDGET_REQUEST_KEY : 'widget_request' });
   }
 
   /// Get current state in stream
