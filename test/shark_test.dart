@@ -1,6 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shark/core/cache_manager.dart';
-import 'package:shark/models/cache_strategy.dart';
 import 'package:shark/models/remote_config.dart';
 
 import 'package:shark/shark.dart';
