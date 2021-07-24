@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shark/core/cache_manager.dart';
 import 'package:shark/core/share_error.dart';
 import 'package:shark/models/cache_strategy.dart';
@@ -81,7 +82,12 @@ class _ShareCore {
   }
 
   Future<void> _initCacheManager(CacheStrategy? cacheStrategy) async {
-    return await CacheManager.init(strategy: cacheStrategy ?? CacheStrategy());
+    return await CacheManager.init(
+      strategy: cacheStrategy ??
+          CacheStrategy(
+            path: (await getApplicationDocumentsDirectory()).path,
+          ),
+    );
   }
 
   /// add new error report function

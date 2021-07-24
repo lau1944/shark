@@ -1,3 +1,4 @@
+import 'package:path_provider/path_provider.dart';
 import 'package:shark/models/cache_strategy.dart';
 import 'package:shark/models/constant.dart';
 import 'package:shark/service/hive_service.dart';
@@ -13,7 +14,7 @@ class CacheManager {
 
   static Future<void> init({required CacheStrategy strategy}) async {
     _storageService = StorageService.getService(strategy.databaseType);
-    await _storageService.init();
+    await _storageService.init(strategy.path);
 
     _validateCache(strategy);
   }

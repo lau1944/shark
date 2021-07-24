@@ -2,6 +2,9 @@ import 'package:shark/models/enum.dart';
 
 /// use for UI json data caching
 class CacheStrategy {
+  /// Database path
+  final String path;
+
   /// maximum duration for cache to stay on disk
   /// default to 3 days
   final Duration maxDuration;
@@ -23,7 +26,8 @@ class CacheStrategy {
   final List<String> excludeKeys;
 
   CacheStrategy(
-      {this.maxDuration = const Duration(days: 3),
+      {required this.path,
+      this.maxDuration = const Duration(days: 3),
       this.maxCacheCount = 100,
       this.databaseType = DatabaseType.hive,
       this.cacheAsPrimary = false,

@@ -73,7 +73,7 @@ class _SharkWidgetState extends State<SharkWidget> with SharkWidgetMixin {
           SharkWidgetState state = snapshot.data as SharkWidgetState;
           if (_isWidgetSuccess(state)) {
             return _SharkWidgetBuilder(
-              jsonString: _controller.value.toString(),
+              jsonString: _controller.value!,
               clickEvent: widget.clickEvent,
             );
           } else if (_isFetchingWidget(state)) {
@@ -89,7 +89,7 @@ class _SharkWidgetState extends State<SharkWidget> with SharkWidgetMixin {
 }
 
 class _SharkWidgetBuilder extends StatelessWidget {
-  final String jsonString;
+  final Map<String, dynamic> jsonString;
   final ClickEvent? clickEvent;
 
   const _SharkWidgetBuilder(
@@ -98,10 +98,10 @@ class _SharkWidgetBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DynamicWidgetBuilder.build(
+    return DynamicWidgetBuilder.buildFromMap(
           jsonString,
           context,
-          WidgetClickListener(clickEvent!),
+          WidgetClickListener(clickEvent),
         ) ??
         SizedBox();
   }

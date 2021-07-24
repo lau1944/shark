@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shark/core/share_error.dart';
 import 'package:shark/service/storage_service.dart';
 
@@ -11,8 +12,7 @@ class HiveService extends StorageService {
   Box? _storageBox;
 
   @override
-  Future<void> init() async {
-    final dir = 'Shark';
+  Future<void> init(String dir) async {
     Hive.init('$dir/$HIVE_STORAGE_PATH');
     await _openBox();
   }

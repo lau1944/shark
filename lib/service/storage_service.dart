@@ -13,7 +13,7 @@ abstract class StorageService {
   }[type];
 
   /// Disk initialization
-  Future<void> init();
+  Future<void> init(String dir);
 
   /// Get data from disk
   Future get(String key);

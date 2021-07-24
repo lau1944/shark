@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,13 +19,19 @@ class SharkController extends ChangeNotifier {
   /// sample:
   /// path = '/login'
   /// your request url would become -> '$hostUrl + /login'
-  final String path;
+  String path = '';
 
   /// Request network headers, will merge to [ApiClient] headers
   Map<String, dynamic> headers = {};
 
   /// Request network params
-  final Map<String, dynamic>? queryParams;
+  Map<String, dynamic>? queryParams;
+
+  /// Local source only
+  late final _isLocalSource;
+
+  /// local source
+  String? source;
 
   /// request json result
   Map<String, dynamic>? _resultJson;
@@ -35,11 +42,20 @@ class SharkController extends ChangeNotifier {
   /// Current request status
   SharkWidgetState _state = SharkWidgetState.init;
 
-  late final StreamController<SharkWidgetState> _streamController;
+  final StreamController<SharkWidgetState> _streamController = StreamController();
 
-  SharkController(
+  SharkController._();
+
+  SharkController.fromUrl(
       {required this.path, this.headers = const {}, this.queryParams}) {
-    _streamController = StreamController()..add(_state);
+    _streamController.add(_state);
+    _isLocalSource = false;
+  }
+
+  SharkController.fromLocal({required this.source}) {
+    _isLocalSource = true;
+    _streamController.add(_state);
+    _resultJson = jsonDecode(source!);
   }
 
   /// Get current result value
@@ -51,35 +67,47 @@ class SharkController extends ChangeNotifier {
 
   /// Fetch the network data on url: $hostUrl + path
   Future<void> get() async {
+    _throwIfSharkNotInit();
+    
     // update state to loading
     _updateState(SharkWidgetState.loading);
     assert(Shark.isInitialized);
 
-    // put widget request tag to header
-    // in order to identify if it's widget request
-    _putWidgetRequestTag();
-
-    final repository = _serviceRepository;
-    // fetch ui here
-    final result = await repository.get(
-      path,
-      params: queryParams,
-      options: Options(headers: headers),
-    );
-
-    if (result is Success) {
-      _resultJson = result.data;
+    if (_isLocalSource) {
       _updateState(SharkWidgetState.success);
-    } else if (result is Error) {
-      SharkReport.report(result.exception, result.message);
-      _updateState(SharkWidgetState.error);
+    } else {
+      // put widget request tag to header
+      // in order to identify if it's widget request
+      _putWidgetRequestTag();
+
+      final repository = _serviceRepository;
+      // fetch ui here
+      final result = await repository.get(
+        path,
+        params: queryParams,
+        options: Options(headers: headers),
+      );
+
+      if (result is Success) {
+        _resultJson = result.data;
+        _updateState(SharkWidgetState.success);
+      } else if (result is Error) {
+        SharkReport.report(result.exception, result.message);
+        _updateState(SharkWidgetState.error);
+      }
     }
 
     notifyListeners();
   }
+  
+  void _throwIfSharkNotInit() {
+    if (!Shark.isInitialized) {
+      throw SharkError('Please call Shark.init before any further operation');
+    }
+  }
 
   void _putWidgetRequestTag() {
-    headers.addAll({ WIDGET_REQUEST_KEY : 'widget_request' });
+    headers.addAll({WIDGET_REQUEST_KEY: 'widget_request'});
   }
 
   /// Get current state in stream
