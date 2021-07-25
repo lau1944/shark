@@ -2,11 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:shark/shark.dart';
 import 'package:shark/views/shark_controller.dart';
-import 'package:shark_example/widget_json.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Shark.init(hostUrl: '');
+  await Shark.init(hostUrl: 'http://localhost:8080');
 
   runApp(MaterialApp(home: MyApp()));
 }
@@ -23,7 +22,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _controller = SharkController.fromLocal(source: container)..get();
+    _controller = SharkController.fromUrl(path: '/container',)..get();
     super.initState();
   }
 
