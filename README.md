@@ -42,6 +42,13 @@ Second, set up UI widget
   }
 ```
 
+If you want to create your own parser
+
+``` dart
+class MyCustomParser extends SharkParser {}
+```
+
+<br></br>
 * Remember that Shark is still on early development and lack of testing, I would not recommend you to use it on Production.
 
 * Note that Shark uses [dynamic_widget](https://pub.dev/packages/dynamic_widget) for widget parsing,
