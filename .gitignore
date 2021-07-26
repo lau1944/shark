@@ -9,6 +9,7 @@
 .history
 .svn/
 pubspec.lock
+shark_server
 
 # IntelliJ related
 *.iml

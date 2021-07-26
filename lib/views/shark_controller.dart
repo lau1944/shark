@@ -42,12 +42,14 @@ class SharkController extends ChangeNotifier {
   /// Current request status
   SharkWidgetState _state = SharkWidgetState.init;
 
-  final StreamController<SharkWidgetState> _streamController = StreamController();
+  final StreamController<SharkWidgetState> _streamController =
+      StreamController();
 
   SharkController._();
 
   SharkController.fromUrl(
-      {required this.path, this.headers = const {}, this.queryParams}) {
+      {required this.path, this.queryParams, Map<String, dynamic>? header}) {
+    headers = header ?? {};
     _streamController.add(_state);
     _isLocalSource = false;
   }
@@ -68,7 +70,7 @@ class SharkController extends ChangeNotifier {
   /// Fetch the network data on url: $hostUrl + path
   Future<void> get() async {
     _throwIfSharkNotInit();
-    
+
     // update state to loading
     _updateState(SharkWidgetState.loading);
     assert(Shark.isInitialized);
@@ -89,17 +91,27 @@ class SharkController extends ChangeNotifier {
       );
 
       if (result is Success) {
-        _resultJson = result.data;
+        _resultJson = _deserialize(result.data);
         _updateState(SharkWidgetState.success);
       } else if (result is Error) {
-        SharkReport.report(result.exception, result.message);
+        SharkReport.report(
+            SharkError('Network error while fetching widget'), result.message);
         _updateState(SharkWidgetState.error);
       }
     }
 
     notifyListeners();
   }
-  
+
+  Map<String, dynamic> _deserialize(data) {
+    if (data is Map<String, dynamic>) return data;
+    if (data is String) {
+      return jsonDecode(data);
+    }
+
+    throw SharkError('Unsupported data format had receviced');
+  }
+
   void _throwIfSharkNotInit() {
     if (!Shark.isInitialized) {
       throw SharkError('Please call Shark.init before any further operation');
@@ -107,7 +119,7 @@ class SharkController extends ChangeNotifier {
   }
 
   void _putWidgetRequestTag() {
-    headers.addAll({WIDGET_REQUEST_KEY: 'widget_request'});
+    headers[WIDGET_REQUEST_KEY] = 'widget_request';
   }
 
   /// Get current state in stream

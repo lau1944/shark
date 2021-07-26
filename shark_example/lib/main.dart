@@ -1,4 +1,5 @@
 
+import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:shark/shark.dart';
 import 'package:shark/views/shark_controller.dart';
