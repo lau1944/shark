@@ -19,10 +19,10 @@ class SharkController extends ChangeNotifier {
   /// sample:
   /// path = '/login'
   /// your request url would become -> '$hostUrl + /login'
-  String path = '';
+  String _path = '';
 
   /// Request network headers, will merge to [ApiClient] headers
-  Map<String, dynamic> headers = {};
+  Map<String, dynamic> _headers = {};
 
   /// Request network params
   Map<String, dynamic>? queryParams;
@@ -43,17 +43,17 @@ class SharkController extends ChangeNotifier {
   SharkWidgetState _state = SharkWidgetState.init;
 
   final StreamController<SharkWidgetState> _streamController =
-      StreamController();
+  StreamController();
 
-  SharkController._();
-
-  SharkController.fromUrl(
-      {required this.path, this.queryParams, Map<String, dynamic>? header}) {
-    headers = header ?? {};
+  /// Apply widget resource from remote source
+  SharkController.fromUrl(this._path,
+      {this.queryParams, Map<String, dynamic>? header}) {
+    _headers = header ?? {};
     _streamController.add(_state);
     _isLocalSource = false;
   }
 
+  /// Apply widget from local source
   SharkController.fromLocal({required this.source}) {
     _isLocalSource = true;
     _streamController.add(_state);
@@ -85,9 +85,9 @@ class SharkController extends ChangeNotifier {
       final repository = _serviceRepository;
       // fetch ui here
       final result = await repository.get(
-        path,
+        _path,
         params: queryParams,
-        options: Options(headers: headers),
+        options: Options(headers: _headers),
       );
 
       if (result is Success) {
@@ -101,6 +101,22 @@ class SharkController extends ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  /// update current request header
+  void updateHeader({required Map<String, dynamic> header}) {
+    _headers = header;
+  }
+
+  /// update current request params
+  void updateParam({required Map<String, dynamic> params}) {
+    queryParams = params;
+  }
+
+  /// Update current widget path & request a new widget
+  Future<void> redirect({required String path}) async {
+    _path = path;
+    return await get();
   }
 
   Map<String, dynamic> _deserialize(data) {
@@ -119,7 +135,7 @@ class SharkController extends ChangeNotifier {
   }
 
   void _putWidgetRequestTag() {
-    headers[WIDGET_REQUEST_KEY] = 'widget_request';
+    _headers[WIDGET_REQUEST_KEY] = 'widget_request';
   }
 
   /// Get current state in stream
