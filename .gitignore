@@ -10,6 +10,7 @@
 .svn/
 pubspec.lock
 shark_server
+./Shark
 
 # IntelliJ related
 *.iml
