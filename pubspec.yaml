@@ -1,6 +1,6 @@
 name: shark
 description: A Flutter server rendering framework for mobile application
-version: 0.0.4
+version: 0.0.5
 repository: https://github.com/lau1944/shark
 
 environment:
