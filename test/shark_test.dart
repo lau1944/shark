@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shark/models/cache_strategy.dart';
-import 'package:shark/models/enum.dart';
-import 'package:shark/models/remote_config.dart';
-
 import 'package:shark/shark.dart';
-import 'package:shark/views/shark_controller.dart';
+import 'package:shark/src/models/cache_strategy.dart';
+import 'package:shark/src/models/enum.dart';
+import 'package:shark/src/models/remote_config.dart';
+import 'package:shark/src/views/shark_controller.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();

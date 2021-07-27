@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:shark/shark.dart';
-import 'package:shark/views/shark_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

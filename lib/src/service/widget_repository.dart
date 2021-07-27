@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:shark/models/result.dart';
-import 'package:shark/service/api_client.dart';
-import 'package:shark/service/service_repository.dart';
+import 'package:shark/src/models/result.dart';
+import 'package:shark/src/service/service_repository.dart';
+
+import 'api_client.dart';
 
 /// The repository for widget json fetching
 class WidgetRepository extends ServiceRepository {

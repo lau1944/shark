@@ -1,4 +1,5 @@
-import 'package:shark/models/enum.dart';
+
+import 'enum.dart';
 
 /// use for UI json data caching
 class CacheStrategy {

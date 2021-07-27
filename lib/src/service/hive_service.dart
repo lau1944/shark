@@ -1,11 +1,11 @@
 import 'package:hive/hive.dart';
-import 'package:shark/core/share_error.dart';
-import 'package:shark/service/storage_service.dart';
+import 'package:shark/src/core/share_error.dart';
+import 'package:shark/src/service/storage_service.dart';
 
 const String HIVE_STORAGE_PATH = 'shark_widget_cache';
 const String HIVE_WIDGET_BOX_NAME = 'shark_box';
 
-/// Implementation of storage service
+/// Implementation of storage src.service
 /// Using [Hive] (https://docs.hivedb.dev/#/) package to store data
 class HiveService extends StorageService {
   Box? _storageBox;

@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:shark/models/cache_strategy.dart';
-import 'package:shark/models/constant.dart';
-import 'package:shark/models/remote_config.dart';
-import 'package:shark/service/interceptors/data_interceptor.dart';
+import 'package:shark/src/models/cache_strategy.dart';
+import 'package:shark/src/models/constant.dart';
+import 'package:shark/src/models/remote_config.dart';
+
+import 'interceptors/data_interceptor.dart';
 
 class ApiClient {
   ApiClient._();

@@ -3,14 +3,14 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:shark/core/share_error.dart';
-import 'package:shark/core/shark_core.dart';
-import 'package:shark/models/constant.dart';
-import 'package:shark/models/enum.dart';
-import 'package:shark/models/result.dart';
-import 'package:shark/service/api_client.dart';
-import 'package:shark/service/service_repository.dart';
-import 'package:shark/service/widget_repository.dart';
+import 'package:shark/src/core/share_error.dart';
+import 'package:shark/src/models/constant.dart';
+import 'package:shark/src/models/enum.dart';
+import 'package:shark/src/models/result.dart';
+import 'package:shark/src/service/service_repository.dart';
+import 'package:shark/src/service/widget_repository.dart';
+
+import '../../shark.dart';
 
 /// Controller for Shark Widget UI, in order to control current widget
 class SharkController extends ChangeNotifier {

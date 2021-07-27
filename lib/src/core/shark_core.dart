@@ -3,12 +3,13 @@ import 'dart:io';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:shark/core/cache_manager.dart';
-import 'package:shark/core/share_error.dart';
-import 'package:shark/models/cache_strategy.dart';
-import 'package:shark/models/remote_config.dart';
-import 'package:shark/service/api_client.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:shark/src/core/share_error.dart';
+import 'package:shark/src/models/cache_strategy.dart';
+import 'package:shark/src/models/remote_config.dart';
+import 'package:shark/src/service/api_client.dart';
+
+import 'cache_manager.dart';
 
 /// Shark entry point
 /// in order to make shark starts, you need to add [Shark.init] before flutter app run
@@ -42,7 +43,7 @@ class Shark {
   static get isInitialized => _ShareCore()._hasInitialized;
 }
 
-/// Share library core method
+/// Share library src.core method
 class _ShareCore {
   _ShareCore._();
 

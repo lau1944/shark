@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:shark/core/cache_manager.dart';
-import 'package:shark/core/share_error.dart';
-import 'package:shark/models/cache_strategy.dart';
-import 'package:shark/models/constant.dart';
+import 'package:shark/src/core/cache_manager.dart';
+import 'package:shark/src/core/share_error.dart';
+import 'package:shark/src/models/cache_strategy.dart';
+import 'package:shark/src/models/constant.dart';
 
 /// Widget request interceptors
 class DataInterceptor extends Interceptor {

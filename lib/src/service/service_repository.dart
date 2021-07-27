@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:shark/models/result.dart';
+import 'package:shark/src/models/result.dart';
 
 /// Abstraction layer to communicate with [ApiClient]
 abstract class ServiceRepository {

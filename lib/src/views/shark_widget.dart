@@ -1,9 +1,10 @@
 import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shark/models/enum.dart';
-import 'package:shark/views/shark_bridge.dart';
-import 'package:shark/views/shark_controller.dart';
+import 'package:shark/src/models/enum.dart';
+import 'package:shark/src/views/shark_controller.dart';
+
+import '../../shark.dart';
 
 /// Entry point for user to create shark widget
 /// use [SharkController] to interact with UI components

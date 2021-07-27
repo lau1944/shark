@@ -1,13 +1,15 @@
 
-import 'package:shark/models/enum.dart';
-import 'package:shark/service/hive_service.dart';
 
-/// Storage service for caching purposes
-/// in order to access storage service, See [CacheManager]
+import 'package:shark/src/models/enum.dart';
+
+import 'hive_service.dart';
+
+/// Storage src.service for caching purposes
+/// in order to access storage src.service, See [CacheManager]
 /// * Storage data format would all be in Map
 abstract class StorageService {
 
-  /// Pattern to get concrete storage service
+  /// Pattern to get concrete storage src.service
   static getService(DatabaseType type) => <DatabaseType, StorageService>{
     DatabaseType.hive: HiveService()
   }[type];

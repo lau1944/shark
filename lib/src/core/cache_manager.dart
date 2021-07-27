@@ -1,15 +1,16 @@
 
-import 'package:shark/models/cache_strategy.dart';
-import 'package:shark/models/constant.dart';
-import 'package:shark/service/hive_service.dart';
-import 'package:shark/service/storage_service.dart';
-import 'package:shark/utils/date_util.dart';
+
+import 'package:shark/src/models/cache_strategy.dart';
+import 'package:shark/src/models/constant.dart';
+import 'package:shark/src/service/hive_service.dart';
+import 'package:shark/src/service/storage_service.dart';
+import 'package:shark/src/utils/date_util.dart';
 
 /// Use this to manage cache in dart framework
 /// It decode [CacheStrategy] and uses strategy pattern to interact with [StorageService]
 class CacheManager {
 
-  /// Current Storage service
+  /// Current Storage src.service
   static late final StorageService _storageService;
 
   static Future<void> init({required CacheStrategy strategy}) async {
