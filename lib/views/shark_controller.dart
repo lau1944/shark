@@ -43,7 +43,7 @@ class SharkController extends ChangeNotifier {
   SharkWidgetState _state = SharkWidgetState.init;
 
   final StreamController<SharkWidgetState> _streamController =
-  StreamController();
+      StreamController.broadcast();
 
   /// Apply widget resource from remote source
   SharkController.fromUrl(this._path,
@@ -103,6 +103,16 @@ class SharkController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Get current state in stream
+  Stream<SharkWidgetState> get stateStream =>
+      _streamController.stream.asBroadcastStream();
+
+  @override
+  void dispose() {
+    _streamController.close();
+    super.dispose();
+  }
+
   /// update current request header
   void updateHeader({required Map<String, dynamic> header}) {
     _headers = header;
@@ -136,15 +146,6 @@ class SharkController extends ChangeNotifier {
 
   void _putWidgetRequestTag() {
     _headers[WIDGET_REQUEST_KEY] = 'widget_request';
-  }
-
-  /// Get current state in stream
-  Stream<SharkWidgetState> getStateInStream() => _streamController.stream;
-
-  @override
-  void dispose() {
-    _streamController.close();
-    super.dispose();
   }
 
   /// Service repository provider function

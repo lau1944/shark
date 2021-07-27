@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shark/core/cache_manager.dart';
+import 'package:shark/core/share_error.dart';
 import 'package:shark/models/cache_strategy.dart';
 import 'package:shark/models/constant.dart';
 
@@ -15,13 +16,14 @@ class DataInterceptor extends Interceptor {
     final key = options.uri.path;
     if (_isWidgetRequest(options.headers) && cacheStrategy.cacheAsPrimary) {
       final data = await CacheManager.get(key);
-      if (data != null)
+      if (data != null) {
         handler.resolve(
           Response(
             requestOptions: options,
             data: data,
           ),
         );
+      }
     }
     super.onRequest(options, handler);
   }
@@ -37,6 +39,11 @@ class DataInterceptor extends Interceptor {
       });
     }
     super.onResponse(response, handler);
+  }
+
+  @override
+  void onError(DioError err, ErrorInterceptorHandler handler) {
+    throw SharkError('Error while fetching UI widget');
   }
 
   void _pushInCache(String key, Map<String, dynamic> data) {

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:shark/models/enum.dart';
 import 'package:shark/views/shark_bridge.dart';
 import 'package:shark/views/shark_controller.dart';
-import 'package:shark/views/shark_widget_mixin.dart';
 
 /// Entry point for user to create shark widget
 /// use [SharkController] to interact with UI components
@@ -28,7 +27,7 @@ class SharkWidget extends StatefulWidget {
   _SharkWidgetState createState() => _SharkWidgetState();
 }
 
-class _SharkWidgetState extends State<SharkWidget> with SharkWidgetMixin {
+class _SharkWidgetState extends State<SharkWidget> {
   late final SharkController _controller;
   late final _initView;
   late final _loadingView;
@@ -42,12 +41,6 @@ class _SharkWidgetState extends State<SharkWidget> with SharkWidgetMixin {
     _loadingView = widget.loadingWidget ?? _defaultLoadingView;
     _errorView = widget.errorWidget ?? _defaultErrorView;
     super.initState();
-  }
-
-  @override
-  void requestWidget() {
-    // request the UI asynchronous here
-    _controller.get();
   }
 
   Widget get _defaultErrorView => Center(
@@ -67,7 +60,7 @@ class _SharkWidgetState extends State<SharkWidget> with SharkWidgetMixin {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _controller.getStateInStream(),
+      stream: _controller.stateStream,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           SharkWidgetState state = snapshot.data as SharkWidgetState;
