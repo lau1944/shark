@@ -11,6 +11,7 @@
 pubspec.lock
 shark_server
 ./Shark
+path
 
 # IntelliJ related
 *.iml
