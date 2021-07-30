@@ -1,6 +1,4 @@
 
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:shark/shark.dart';
 
@@ -23,16 +21,24 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _controller = SharkController.fromUrl('/container',)..get();
+    _controller = SharkController.fromUrl(
+      '/container',
+    )..get();
+
     /// After 10 secs, redirect to text widget
-    Timer(Duration(seconds: 5), () {
+    /* Timer(Duration(seconds: 5), () {
       _controller.redirect(path: '/text');
-    });
+    });*/
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SharkWidget(controller: _controller);
+    return SharkWidget(
+      controller: _controller,
+      clickEvent: (event) {
+        print(event);
+      },
+    );
   }
 }

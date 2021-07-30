@@ -10,10 +10,6 @@ class CacheStrategy {
   /// default to 3 days
   final Duration maxDuration;
 
-  /// maximum json objects to store on disk
-  /// default to 100.
-  final int maxCacheCount;
-
   /// If we should use the cache if available
   /// set True, we would see if the disk contains such element key,
   /// if it exists, will return this value (no network call would occur)
@@ -29,7 +25,6 @@ class CacheStrategy {
   CacheStrategy(
       {required this.path,
       this.maxDuration = const Duration(days: 3),
-      this.maxCacheCount = 100,
       this.databaseType = DatabaseType.hive,
       this.cacheAsPrimary = false,
       this.excludeKeys = const []});

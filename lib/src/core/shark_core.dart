@@ -2,14 +2,11 @@ import 'dart:io';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:shark/src/core/share_error.dart';
 import 'package:shark/src/models/cache_strategy.dart';
 import 'package:shark/src/models/remote_config.dart';
 import 'package:shark/src/service/api_client.dart';
-
-import 'cache_manager.dart';
 
 /// Shark entry point
 /// in order to make shark starts, you need to add [Shark.init] before flutter app run
@@ -76,19 +73,7 @@ class _ShareCore {
         interceptors: interceptors,
         cacheStrategy: cacheStrategy);
 
-    // cache client init
-    await _initCacheManager(cacheStrategy);
-
     _hasInitialized = true;
-  }
-
-  Future<void> _initCacheManager(CacheStrategy? cacheStrategy) async {
-    return await CacheManager.init(
-      strategy: cacheStrategy ??
-          CacheStrategy(
-            path: (await getApplicationDocumentsDirectory()).path,
-          ),
-    );
   }
 
   /// add new error report function

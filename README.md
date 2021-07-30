@@ -62,4 +62,5 @@ You can also view the [express server sample](https://github.com/lau1944/shark-s
  - Routing 
  - Parsing widget optimization
  - Security
+ - Localization
  - Caching
