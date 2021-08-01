@@ -57,7 +57,7 @@ class MyCustomParser extends SharkParser {}
 
 ## Routing
 
-<p> `shark` auto handle your page routing, if you do not want it, set `handleClickEvent` to false</p>
+ `shark` auto handles your page routing, if you do not want it, set `handleClickEvent` to false
 
 ``` dart
     _sharkController = SharkController('/your_path', handleClickEvent: false);
@@ -73,10 +73,14 @@ class MyCustomParser extends SharkParser {}
         'click_event': 'route://your_path'
     }
 ```
-<p> The schema `route` represents the routing action </p>
+  
+The schema `route` represents the routing action 
 
 Currently, there are only 2 routing action
+
+
 `route`: Navigation to the next page corresponds to the path you define
+
 `link`: use `url_launcher` internally to open a url on browser, please visit [url_launcher](https://pub.dev/packages/url_launcher) to configure the detail requirements for each platform
 
 
