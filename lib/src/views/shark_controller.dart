@@ -9,6 +9,7 @@ import 'package:shark/src/models/enum.dart';
 import 'package:shark/src/models/result.dart';
 import 'package:shark/src/service/service_repository.dart';
 import 'package:shark/src/service/widget_repository.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../shark.dart';
 
@@ -42,19 +43,26 @@ class SharkController extends ChangeNotifier {
   /// Current request status
   SharkWidgetState _state = SharkWidgetState.init;
 
+  /// Whether shark should handle click event or not
+  /// including route, link event
+  late final bool handleClickEvent;
+
   final StreamController<SharkWidgetState> _streamController =
       StreamController.broadcast();
 
   /// Apply widget resource from remote source
   SharkController.fromUrl(this._path,
-      {this.queryParams, Map<String, dynamic>? header}) {
+      {this.queryParams,
+      Map<String, dynamic>? header,
+      this.handleClickEvent = true}) {
     _headers = header ?? {};
     _streamController.add(_state);
     _isLocalSource = false;
   }
 
   /// Apply widget from local source
-  SharkController.fromLocal({required this.source}) {
+  SharkController.fromLocal(
+      {required this.source, this.handleClickEvent = true}) {
     _isLocalSource = true;
     _streamController.add(_state);
     _resultJson = jsonDecode(source!);
@@ -129,6 +137,27 @@ class SharkController extends ChangeNotifier {
     return await get();
   }
 
+  void parseEvent(String? event) {
+    if (event != null) {
+      final routeMeta = _parseEvent(event);
+      _doRouteAction(routeMeta!.type, routeMeta.path);
+    }
+  }
+
+  void _doRouteAction(RouteType type, String path) {
+    if (type == RouteType.route) {
+      redirect(path: '/$path');
+    } else if (type == RouteType.link) {
+      _openUrl(path);
+    }
+  }
+
+  void _openUrl(String url) async {
+    await canLaunch(url)
+        ? await launch(url)
+        : throwSharkError(message: 'error launching url');
+  }
+
   Map<String, dynamic> _deserialize(data) {
     if (data is Map<String, dynamic>) return data;
     if (data is String) {
@@ -156,4 +185,31 @@ class SharkController extends ChangeNotifier {
     _state = newState;
     _streamController.add(newState);
   }
+}
+
+_RouteMeta? _parseEvent(String event) {
+  try {
+    final url = Uri.parse(event);
+    if (url.hasScheme) {
+      final schema = url.scheme;
+      if (routeTypeMap.containsKey(schema)) {
+        return _RouteMeta(
+          routeTypeMap[schema]!,
+          url.toString().replaceFirst('$schema://', ''),
+        );
+      }
+      throwSharkError(message: 'No route schema match, please check again');
+    } else {
+      throwSharkError(message: 'Please contain a schema on click_event field');
+    }
+  } catch (e) {
+    SharkReport.report(e);
+  }
+}
+
+class _RouteMeta {
+  final RouteType type;
+  final String path;
+
+  _RouteMeta(this.type, this.path);
 }

@@ -43,11 +43,42 @@ Second, set up UI widget
   }
 ```
 
+<p> To redirect to another page, call `redirect`
+
+```dart
+    _controller.redirect('/your_new_path');
+```
+
 If you want to create your own parser
 
 ``` dart
 class MyCustomParser extends SharkParser {}
 ```
+
+## Routing
+
+<p> `shark` auto handle your page routing, if you do not want it, set `handleClickEvent` to false</p>
+
+``` dart
+    _sharkController = SharkController('/your_path', handleClickEvent: false);
+```
+
+### Click Event
+
+<p> Routing trigger by click event, which you can set it like this on your json widget file.
+
+```javascript
+    {
+        'type': "container",
+        'click_event': 'route://your_path'
+    }
+```
+<p> The schema `route` represents the routing action </p>
+
+Currently, there are only 2 routing action
+`route`: Navigation to the next page corresponds to the path you define
+`link`: use `url_launcher` internally to open a url on browser, please visit [url_launcher](https://pub.dev/packages/url_launcher) to configure the detail requirements for each platform
+
 
 <br></br>
 * Remember that Shark is still on early development and lack of testing, I would not recommend you to use it on Production.

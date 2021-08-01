@@ -67,7 +67,7 @@ class _SharkWidgetState extends State<SharkWidget> {
           SharkWidgetState state = snapshot.data as SharkWidgetState;
           if (_isWidgetSuccess(state)) {
             return _SharkWidgetBuilder(
-              jsonString: _controller.value!,
+              controller: _controller,
               clickEvent: widget.clickEvent,
             );
           } else if (_isFetchingWidget(state)) {
@@ -83,19 +83,21 @@ class _SharkWidgetState extends State<SharkWidget> {
 }
 
 class _SharkWidgetBuilder extends StatelessWidget {
-  final Map<String, dynamic> jsonString;
   final ClickEvent? clickEvent;
+  final SharkController controller;
 
   const _SharkWidgetBuilder(
-      {required this.jsonString, this.clickEvent, Key? key})
+      {required this.controller,
+      this.clickEvent,
+      Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DynamicWidgetBuilder.buildFromMap(
-          jsonString,
+          controller.value!,
           context,
-          WidgetClickListener(clickEvent),
+          WidgetClickListener(clickEvent, controller),
         ) ??
         SizedBox();
   }
@@ -103,12 +105,14 @@ class _SharkWidgetBuilder extends StatelessWidget {
 
 class WidgetClickListener extends ClickListener {
   final ClickEvent? _clickEvent;
+  final SharkController _controller;
 
-  WidgetClickListener(this._clickEvent);
+  WidgetClickListener(this._clickEvent, this._controller);
 
   @override
   void onClicked(String? event) {
     if (_clickEvent != null) {
+      _controller.parseEvent(event);
       _clickEvent!(event);
     }
   }

@@ -22,6 +22,10 @@ class SharkReport {
 
   static List<SharkErrorFunction> _errorReports = [onError];
 
+  static throwSharkError({required String message}) {
+    throw SharkError(message);
+  }
+
   static addErrorReport(SharkErrorFunction errorFunction) {
     _errorReports.add(errorFunction);
   }
@@ -33,6 +37,10 @@ class SharkReport {
       });
     });
   }
+}
+
+void throwSharkError({required String message}) {
+  SharkReport.throwSharkError(message: message);
 }
 
 class SharkError extends Error {

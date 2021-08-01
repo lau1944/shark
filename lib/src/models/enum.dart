@@ -15,3 +15,13 @@ enum DatabaseType {
   mem,
   moor,
 }
+
+Map<String, RouteType> get routeTypeMap => {
+  'route': RouteType.route,
+  'link': RouteType.link,
+};
+
+/// Routing action type
+enum RouteType {
+  route, link
+}
