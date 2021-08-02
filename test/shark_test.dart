@@ -46,7 +46,7 @@ class __TestWidgetState extends State<_TestWidget> {
     //_sharkController.get();
     _sharkController.updateHeader(header: {'new_header': 'hello'});
     _sharkController.updateParam(params: {'new_param': 'param'});
-    _sharkController.redirect(path: '/text');
+    //_sharkController.redirect(path: '/text');
     _sharkController.stateStream.listen((state) {
       if (state == SharkWidgetState.success) {
         print(_sharkController.value);

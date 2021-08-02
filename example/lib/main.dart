@@ -34,11 +34,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return SharkWidget(
-      controller: _controller,
-      clickEvent: (event) {
-        print(event);
-      },
+    return Scaffold(
+      body: SharkWidget(
+        controller: _controller,
+        clickEvent: (event) {
+          print(event);
+        },
+      ),
     );
   }
 }

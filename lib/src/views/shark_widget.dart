@@ -45,7 +45,10 @@ class _SharkWidgetState extends State<SharkWidget> {
   }
 
   Widget get _defaultErrorView => Center(
-        child: Text('Something went wrong'),
+        child: Text(
+          'Something went wrong',
+          style: TextStyle(color: Colors.black, fontSize: 14),
+        ),
       );
 
   Widget get _defaultLoadingView => Center(
@@ -87,9 +90,7 @@ class _SharkWidgetBuilder extends StatelessWidget {
   final SharkController controller;
 
   const _SharkWidgetBuilder(
-      {required this.controller,
-      this.clickEvent,
-      Key? key})
+      {required this.controller, this.clickEvent, Key? key})
       : super(key: key);
 
   @override

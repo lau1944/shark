@@ -1,4 +1,4 @@
-# Shark Flutter 🦈 (Under Construction)
+# Shark Flutter 🦈 (Official)
 
 [![codecov](https://codecov.io/gh/lau1944/shark/branch/dev/graph/badge.svg?token=USH2YH4BK1)](https://codecov.io/gh/lau1944/shark)
 [![pub package](https://img.shields.io/pub/v/shark.svg)](https://pub.dev/packages/shark)
@@ -89,19 +89,15 @@ Currently, there are only 2 routing action
 
 When you initialize the shark library, you can pass a `cacheStrategy` argument to config your caching setting.
 
+## Parsing
 
-<br></br>
-* Remember that Shark is still on early development and lack of testing, I would not recommend you to use it on Production.
+Note that Shark uses [dynamic_widget](https://pub.dev/packages/dynamic_widget) for widget parsing,
 
-* Note that Shark uses [dynamic_widget](https://pub.dev/packages/dynamic_widget) for widget parsing,
-* To view the json format, go visit [documentation](https://github.com/dengyin2000/dynamic_widget/blob/master/WIDGETS.md) on dynamic_widget.
+To view the json format, go visit [documentation](https://github.com/dengyin2000/dynamic_widget/blob/master/WIDGETS.md) on dynamic_widget.
 
 You can also view the [express server sample](https://github.com/lau1944/shark-server)
 
 ### Future Job
 
- - Routing 
- - Parsing widget optimization
  - Security
  - Localization
- - Caching
