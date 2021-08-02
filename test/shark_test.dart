@@ -11,7 +11,9 @@ void main() {
   test('testShareInit', () async {
     await Shark.init(
         hostUrl: 'http://localhost:8080',
-        cacheStrategy: CacheStrategy(path: 'path'),
+        cacheStrategy: CacheStrategy(
+          path: 'path',
+        ),
         remoteConfig: RemoteConfig(
           timeout: 20000,
           headers: {
@@ -44,6 +46,7 @@ class __TestWidgetState extends State<_TestWidget> {
     //_sharkController.get();
     _sharkController.updateHeader(header: {'new_header': 'hello'});
     _sharkController.updateParam(params: {'new_param': 'param'});
+    _sharkController.redirect(path: '/text');
     _sharkController.stateStream.listen((state) {
       if (state == SharkWidgetState.success) {
         print(_sharkController.value);
@@ -54,6 +57,11 @@ class __TestWidgetState extends State<_TestWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SharkWidget(controller: _sharkController);
+    return SharkWidget(
+      controller: _sharkController,
+      clickEvent: (event) {
+        print(event);
+      },
+    );
   }
 }

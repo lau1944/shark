@@ -1,11 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
-import 'package:dio_cache_interceptor_db_store/dio_cache_interceptor_db_store.dart';
-import 'package:dio_cache_interceptor_hive_store/dio_cache_interceptor_hive_store.dart';
-import 'package:shark/src/core/share_error.dart';
 import 'package:shark/src/models/cache_strategy.dart';
 import 'package:shark/src/models/constant.dart';
-import 'package:shark/src/models/enum.dart';
 import 'package:shark/src/models/remote_config.dart';
 
 class ApiClient {
@@ -45,34 +41,11 @@ class ApiClient {
   }
 
   CacheOptions _buildCacheOption(CacheStrategy strategy) => CacheOptions(
-        store: _convertToStore(strategy),
+        store: strategy.cacheStore ?? MemCacheStore(),
         maxStale: strategy.maxDuration,
         priority:
             strategy.cacheAsPrimary ? CachePriority.high : CachePriority.normal,
       );
-
-  CacheStore _convertToStore(CacheStrategy strategy) {
-    switch (strategy.databaseType) {
-      case DatabaseType.hive:
-        {
-          return HiveCacheStore(strategy.path);
-        }
-      case DatabaseType.file:
-        {
-          return FileCacheStore(strategy.path);
-        }
-      case DatabaseType.mem:
-        {
-          return MemCacheStore();
-        }
-      case DatabaseType.moor:
-        {
-          return DbCacheStore(databasePath: strategy.path);
-        }
-      default:
-        throw SharkError('Unknown type of database cache');
-    }
-  }
 
   void _addInterceptors(List<Interceptor>? interceptors,
       [CacheStrategy? strategy]) {

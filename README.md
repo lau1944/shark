@@ -83,6 +83,12 @@ Currently, there are only 2 routing action
 
 `link`: use `url_launcher` internally to open a url on browser, please visit [url_launcher](https://pub.dev/packages/url_launcher) to configure the detail requirements for each platform
 
+## Caching
+
+`Shark` use [dio_cache_interceptor](https://pub.dev/packages/dio_cache_interceptor) for caching purposes.
+
+When you initialize the shark library, you can pass a `cacheStrategy` argument to config your caching setting.
+
 
 <br></br>
 * Remember that Shark is still on early development and lack of testing, I would not recommend you to use it on Production.

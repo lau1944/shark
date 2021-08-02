@@ -1,5 +1,4 @@
-
-import 'enum.dart';
+import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 
 /// use for UI json data caching
 class CacheStrategy {
@@ -16,16 +15,17 @@ class CacheStrategy {
   /// default to [false]
   final bool cacheAsPrimary;
 
-  /// Use which type to store data
-  final DatabaseType databaseType;
-
   /// This collection is the one we don't want to store them on disk
   final List<String> excludeKeys;
 
+  /// Use dio_cache_interceptor library,
+  /// see more on [https://pub.dev/packages/dio_cache_interceptor]
+  CacheStore? cacheStore;
+
   CacheStrategy(
       {required this.path,
+      this.cacheStore,
       this.maxDuration = const Duration(days: 3),
-      this.databaseType = DatabaseType.hive,
       this.cacheAsPrimary = false,
       this.excludeKeys = const []});
 }
