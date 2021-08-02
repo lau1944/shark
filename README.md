@@ -59,7 +59,7 @@ Second, set up UI widget
 <p> To redirect to another page, call `redirect`
 
 ```dart
-    _controller.redirect('/your_new_path');
+_controller.redirect('/your_new_path');
 ```
 
 If you want to create your own parser
@@ -73,7 +73,7 @@ class MyCustomParser extends SharkParser {}
  `shark` auto handles your page routing, if you do not want it, set `handleClickEvent` to false
 
 ``` dart
-    _sharkController = SharkController('/your_path', handleClickEvent: false);
+ _sharkController = SharkController('/your_path', handleClickEvent: false);
 ```
 
 ### Click Event
@@ -107,8 +107,15 @@ When you initialize the shark library, you can pass a `cacheStrategy` argument t
 Note that Shark uses [dynamic_widget](https://pub.dev/packages/dynamic_widget) for widget parsing,
 
 To view the json format, go visit [documentation](https://github.com/dengyin2000/dynamic_widget/blob/master/WIDGETS.md) on dynamic_widget.
-
-You can also view the [express server sample](https://github.com/lau1944/shark-server)
+  
+  
+## OTHER
+You can also view the [express server sample](https://github.com/lau1944/shark-server), you can deploy to [heroku](https://www.heroku.com/home) fast
+  
+or you can test it on this temporary host =(little slow)
+  
+https://shark-sample-server.herokuapp.com/    
+  
 
 ### Future Job
 
