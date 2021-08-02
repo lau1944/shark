@@ -39,14 +39,14 @@ class _TestWidget extends StatefulWidget {
 
 class __TestWidgetState extends State<_TestWidget> {
   late final SharkController _sharkController =
-      SharkController.fromUrl('/container');
+      SharkController.fromUrl('/firstPage');
 
   @override
   void initState() {
-    //_sharkController.get();
+    _sharkController.get();
     _sharkController.updateHeader(header: {'new_header': 'hello'});
     _sharkController.updateParam(params: {'new_param': 'param'});
-    //_sharkController.redirect(path: '/text');
+    _sharkController.redirect(path: '/secondPage');
     _sharkController.stateStream.listen((state) {
       if (state == SharkWidgetState.success) {
         print(_sharkController.value);

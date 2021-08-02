@@ -138,7 +138,7 @@ class SharkController extends ChangeNotifier {
   }
 
   void parseEvent(String? event) {
-    if (event != null) {
+    if (event != null && event.isNotEmpty) {
       final routeMeta = _parseEvent(event);
       _doRouteAction(routeMeta!.type, routeMeta.path);
     }
@@ -189,13 +189,12 @@ class SharkController extends ChangeNotifier {
 
 _RouteMeta? _parseEvent(String event) {
   try {
-    final url = Uri.parse(event);
-    if (url.hasScheme) {
-      final schema = url.scheme;
+    final schema = _validateEvent(event);
+    if (schema.isNotEmpty) {
       if (routeTypeMap.containsKey(schema)) {
         return _RouteMeta(
           routeTypeMap[schema]!,
-          url.toString().replaceFirst('$schema://', ''),
+          event.toString().replaceFirst(schema, ''),
         );
       }
       throwSharkError(message: 'No route schema match, please check again');
@@ -205,6 +204,18 @@ _RouteMeta? _parseEvent(String event) {
   } catch (e) {
     SharkReport.report(e);
   }
+}
+
+/// Validate upcoming click event with their prefix
+/// If the action does not satisfy routing action, will return empty string
+String _validateEvent(String event) {
+  if (event.startsWith(ROUTE_SCHEMA)) {
+    return ROUTE_SCHEMA;
+  } else if (event.startsWith(LINK_SCHEMA)) {
+    return LINK_SCHEMA;
+  }
+
+  return '';
 }
 
 class _RouteMeta {
