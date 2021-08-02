@@ -1,8 +1,5 @@
-
 /// Shark Widget request status
-enum SharkWidgetState {
-  success, error, loading, init
-}
+enum SharkWidgetState { success, error, loading, init }
 
 /// Current support storage packages
 /// moor: Cache with database (Moor) Get it.
@@ -17,11 +14,9 @@ enum DatabaseType {
 }
 
 Map<String, RouteType> get routeTypeMap => {
-  'route': RouteType.route,
-  'link': RouteType.link,
-};
+      'route://': RouteType.route,
+      'link://': RouteType.link,
+    };
 
 /// Routing action type
-enum RouteType {
-  route, link
-}
+enum RouteType { route, link }

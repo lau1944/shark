@@ -22,13 +22,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _controller = SharkController.fromUrl(
-      '/container',
+      '/first_page',
     )..get();
 
-    /// After 10 secs, redirect to text widget
-    /* Timer(Duration(seconds: 5), () {
-      _controller.redirect(path: '/text');
-    });*/
+    _controller.stateStream.listen((state) {
+      if (state is SharkWidgetState) {
+        print(_controller.value);
+      }
+    });
+
     super.initState();
   }
 
