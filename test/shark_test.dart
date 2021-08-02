@@ -43,10 +43,10 @@ class __TestWidgetState extends State<_TestWidget> {
 
   @override
   void initState() {
-    _sharkController.get();
+    //_sharkController.get();
     _sharkController.updateHeader(header: {'new_header': 'hello'});
     _sharkController.updateParam(params: {'new_param': 'param'});
-    _sharkController.redirect(path: '/secondPage');
+    //_sharkController.redirect(path: '/secondPage');
     _sharkController.stateStream.listen((state) {
       if (state == SharkWidgetState.success) {
         print(_sharkController.value);
