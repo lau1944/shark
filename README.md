@@ -6,6 +6,18 @@
 
 A Flutter server rendering framework 
 
+## What it is
+
+Shark is a server rendering framework, a server-driven UI framework.
+
+Simple use case of shark
+
+Let say you have a `text` widget, you specify it as json on the server return to the client,
+the client use shark to receive the text widget and show the UI successfully.
+
+After a while, you want to change the text widget to a `button`, instead of modify it on the client code and go through all the mobile app store update process,
+you only need to modify the text widget to a button widget on the server, and the shark client received it, showed the newest UI.
+
 ### Project diagram
 
 <img src="https://github.com/lau1944/shark/blob/dev/shark_diagram.png?raw=true" width="1000" >
