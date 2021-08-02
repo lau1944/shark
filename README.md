@@ -62,12 +62,6 @@ Second, set up UI widget
 _controller.redirect('/your_new_path');
 ```
 
-If you want to create your own parser
-
-``` dart
-class MyCustomParser extends SharkParser {}
-```
-
 ## Routing
 
  `shark` auto handles your page routing, if you do not want it, set `handleClickEvent` to false
@@ -105,6 +99,12 @@ When you initialize the shark library, you can pass a `cacheStrategy` argument t
 ## Parsing
 
 Note that Shark uses [dynamic_widget](https://pub.dev/packages/dynamic_widget) for widget parsing,
+  
+If you want to create your own parser
+
+``` dart
+class MyCustomParser extends SharkParser {}
+```  
 
 To view the json format, go visit [documentation](https://github.com/dengyin2000/dynamic_widget/blob/master/WIDGETS.md) on dynamic_widget.
   
@@ -117,6 +117,15 @@ or you can test it on this temporary host =(little slow)
 https://shark-sample-server.herokuapp.com/    
   
 
+  
+  
+### Real world sample (Promotion 😂)
+  
+My new meditation app had implemented `shark` recently, the `profile` page is handled by `shark` completely. 
+
+https://seasonnatural.netlify.app/  
+  
+  
 ### Future Job
 
  - Security
