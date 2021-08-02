@@ -2,6 +2,7 @@
 
 [![codecov](https://codecov.io/gh/lau1944/shark/branch/dev/graph/badge.svg?token=USH2YH4BK1)](https://codecov.io/gh/lau1944/shark)
 [![pub package](https://img.shields.io/pub/v/shark.svg)](https://pub.dev/packages/shark)
+[![CodeFactor](https://www.codefactor.io/repository/github/lau1944/shark/badge/main)](https://www.codefactor.io/repository/github/lau1944/shark/overview/main)
 
 A Flutter server rendering framework 
 
