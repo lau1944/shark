@@ -89,31 +89,44 @@ A sample event json format
 
 ```json
     {
-        'type': "container",
-        'click_event': 'route://your_path?xxx=xxx'
+        "type": "container",
+        "click_event": "route://your_path?xxx=xxx"
     }
 ```
 
 `schema`: xxx://
+  
+  
 `path`: your_path
-`argument`: After the prefix `?' is the argument field.
+  
+  
+`argument`: After the prefix '?' is the argument field.
 xxx=xxx, separate with `&`
+  
+sample: 
+```json
+"click_event": "route://second_page?name=hello&place=world"  
+```
 
-The schema `route` represents the routing action
+### The schema represents the routing action
+  
 
 Currently, there are 4 routing action
 
-`route`: prefix with 'route://', internally would call [Navigator.pushName('new_path', args)]
+`route`: prefix with `route://`, internally would call `Navigator.pushName('new_path', args)`
+  
 
-Push a new route to [Navigator]
+Push a new route to `Navigator`
 
 ** Please remember to specify `route path` on your route map
+  
+  
 If not, navigator would throw an error
 then SharkController would try to navigator to a new default shark widget with the following path
 
-`pop`: prefix with 'pop://', internally would call [Navigator.pop(result)]
+`pop`: prefix with `pop://`, internally would call `Navigator.pop(result)`
 
-`redirect`: prefix with 'redirect://', redirect current page with the following path
+`redirect`: prefix with `redirect://`, redirect current page with the following path
 
 `link`: use `url_launcher` internally to open a url on browser, please visit [url_launcher](https://pub.dev/packages/url_launcher) to configure the detail requirements for each platform
 
