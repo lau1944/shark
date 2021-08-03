@@ -13,10 +13,10 @@ enum DatabaseType {
   moor,
 }
 
-Map<String, RouteType> get routeTypeMap => {
-      'route://': RouteType.route,
-      'link://': RouteType.link,
-    };
-
 /// Routing action type
-enum RouteType { route, link }
+///
+/// route: prefix with 'route://', internally would call [Navigator.pushName('new_path')]
+/// pop: prefix with 'pop://', internally would call [Navigator.pop()]
+/// redirect: prefix with 'redirect://', redirect current page with the following path
+/// link: prefix with 'link://', start the browser to open a url
+enum RouteType { route, redirect, pop, link }
