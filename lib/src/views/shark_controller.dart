@@ -3,12 +3,14 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:shark/src/core/share_error.dart';
 import 'package:shark/src/models/constant.dart';
 import 'package:shark/src/models/enum.dart';
 import 'package:shark/src/models/result.dart';
 import 'package:shark/src/service/service_repository.dart';
 import 'package:shark/src/service/widget_repository.dart';
+import 'package:shark/src/views/default_shark_route.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../shark.dart';
@@ -31,6 +33,9 @@ class SharkController extends ChangeNotifier {
   /// Local source only
   late final _isLocalSource;
 
+  /// current widget context
+  late final BuildContext context;
+
   /// local source
   String? source;
 
@@ -51,7 +56,7 @@ class SharkController extends ChangeNotifier {
       StreamController.broadcast();
 
   /// Apply widget resource from remote source
-  SharkController.fromUrl(this._path,
+  SharkController.fromUrl(this.context, this._path,
       {this.queryParams,
       Map<String, dynamic>? header,
       this.handleClickEvent = true}) {
@@ -62,7 +67,9 @@ class SharkController extends ChangeNotifier {
 
   /// Apply widget from local source
   SharkController.fromLocal(
-      {required this.source, this.handleClickEvent = true}) {
+      {required this.source,
+      required this.context,
+      this.handleClickEvent = true}) {
     _isLocalSource = true;
     _streamController.add(_state);
     _resultJson = jsonDecode(source!);
@@ -132,26 +139,67 @@ class SharkController extends ChangeNotifier {
   }
 
   /// Update current widget path & request a new widget
+  /// * please note that this method would not create a new route, it would just change UI from current page
   Future<void> redirect({required String path}) async {
     _path = path;
     return await get();
   }
 
+  /// refresh current page corresponds to the current path
+  Future<void> refresh() async {
+    if (_resultJson == null)
+      throwSharkError(
+          message:
+              'Should wait for previous result before any refresh operation');
+
+    return await get();
+  }
+
+  /// Parse click event
   void parseEvent(String? event) {
+    if (!handleClickEvent) return;
+
     if (event != null && event.isNotEmpty) {
       final routeMeta = _parseEvent(event);
-      _doRouteAction(routeMeta!.type, routeMeta.path);
+      _doRouteAction(routeMeta!.type, routeMeta.path, routeMeta.arguments);
     }
   }
 
-  void _doRouteAction(RouteType type, String path) {
+  /// Parse click action, all the path would add a '/' prefix
+  void _doRouteAction(RouteType type, String path,
+      [Map<String, String>? arguments]) {
     if (type == RouteType.route) {
+      _openNewPage('/$path', args: arguments);
+    } else if (type == RouteType.pop) {
+      _pop(args: arguments);
+    } else if (type == RouteType.redirect) {
       redirect(path: '/$path');
     } else if (type == RouteType.link) {
       _openUrl(path);
     }
   }
 
+  /// Pop current route
+  void _pop({Map<String, String>? args}) {
+    Navigator.pop(context, args);
+  }
+
+  /// Push a new route to [Navigator]
+  /// ** Please remember to specify [path] on your route map
+  /// If not, navigator would throw an error
+  /// then SharkController would try to navigator to a new default shark widget with following path
+  void _openNewPage(String path, {Map<String, String>? args}) {
+    try {
+      Navigator.pushNamed(context, path, arguments: args);
+    } catch (e) {
+      Navigator.push(
+        context,
+        defaultSharkRoute(path, args),
+      );
+    }
+  }
+
+  /// open url on a browser
   void _openUrl(String url) async {
     await canLaunch(url)
         ? await launch(url)
@@ -164,7 +212,7 @@ class SharkController extends ChangeNotifier {
       return jsonDecode(data);
     }
 
-    throw SharkError('Unsupported data format had receviced');
+    throw SharkError('Unsupported data format had received');
   }
 
   void _throwIfSharkNotInit() {
@@ -187,14 +235,18 @@ class SharkController extends ChangeNotifier {
   }
 }
 
+/// Parse current event to [_RouteMeta] object
 _RouteMeta? _parseEvent(String event) {
   try {
-    final schema = _validateEvent(event);
+    final schema = _validatePrefix(event);
     if (schema.isNotEmpty) {
       if (routeTypeMap.containsKey(schema)) {
+        final content = event.replaceFirst(schema, '');
+        final args = event.substring(event.indexOf('?') + 1);
         return _RouteMeta(
           routeTypeMap[schema]!,
-          event.toString().replaceFirst(schema, ''),
+          content,
+          _parseArguments(args),
         );
       }
       throwSharkError(message: 'No route schema match, please check again');
@@ -206,13 +258,32 @@ _RouteMeta? _parseEvent(String event) {
   }
 }
 
+/// Parse arguments into Map object
+Map<String, String>? _parseArguments(String? args) {
+  if (args == null || args.isEmpty) return null;
+
+  final argValue = <String, String>{};
+  List<String> arg = args.split('&');
+  for (final e in arg) {
+    List<String> pair = e.split('=');
+    if (pair.length == 2) {
+      argValue[pair[0]] = pair[1];
+    }
+  }
+  return argValue;
+}
+
 /// Validate upcoming click event with their prefix
 /// If the action does not satisfy routing action, will return empty string
-String _validateEvent(String event) {
+String _validatePrefix(String event) {
   if (event.startsWith(ROUTE_SCHEMA)) {
     return ROUTE_SCHEMA;
   } else if (event.startsWith(LINK_SCHEMA)) {
     return LINK_SCHEMA;
+  } else if (event.startsWith(REDIRECT_SCHEMA)) {
+    return REDIRECT_SCHEMA;
+  } else if (event.startsWith(POP_SCHEMA)) {
+    return POP_SCHEMA;
   }
 
   return '';
@@ -222,5 +293,8 @@ class _RouteMeta {
   final RouteType type;
   final String path;
 
-  _RouteMeta(this.type, this.path);
+  /// for now, only support argument type in string
+  final Map<String, String>? arguments;
+
+  _RouteMeta(this.type, this.path, [this.arguments]);
 }

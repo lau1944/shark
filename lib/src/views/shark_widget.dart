@@ -112,8 +112,8 @@ class WidgetClickListener extends ClickListener {
 
   @override
   void onClicked(String? event) {
+    _controller.parseEvent(event);
     if (_clickEvent != null) {
-      _controller.parseEvent(event);
       _clickEvent!(event);
     }
   }

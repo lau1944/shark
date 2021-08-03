@@ -4,7 +4,6 @@ typedef void SharkErrorFunction(error, String? message);
 
 /// default error report callback function
 SharkErrorFunction get onError => (err, message) {
-      print(err.toString());
       throw SharkError(message ?? err.toString());
     };
 
@@ -44,6 +43,7 @@ void throwSharkError({required String message}) {
 class SharkError extends Error {
   /// message of the error
   final String message;
+
   SharkError(this.message);
 
   @override

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:shark/shark.dart';
 
@@ -22,6 +21,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _controller = SharkController.fromUrl(
+      context,
       '/first_page',
     )..get();
 
