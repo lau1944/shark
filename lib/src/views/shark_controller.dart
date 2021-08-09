@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:dynamic_widget/dynamic_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shark/src/core/share_error.dart';
@@ -34,6 +35,7 @@ class SharkController extends ChangeNotifier {
   late final _isLocalSource;
 
   /// current widget context
+  /// current context object must be under Navigator.
   late final BuildContext context;
 
   /// local source
@@ -163,6 +165,11 @@ class SharkController extends ChangeNotifier {
       final routeMeta = _parseEvent(event);
       _doRouteAction(routeMeta!.type, routeMeta.path, routeMeta.arguments);
     }
+  }
+
+  /// Add custom parser to [SharkWidget]
+  void addParse(SharkParser parser) {
+    DynamicWidgetBuilder.addParser(parser);
   }
 
   /// Parse click action, all the path would add a '/' prefix
