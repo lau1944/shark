@@ -1,11 +1,34 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shark/shark.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
   await Shark.init(hostUrl: 'http://localhost:8080');
 
-  runApp(MaterialApp(home: MyApp()));
+  runApp(
+    EasyLocalization(
+      supportedLocales: [Locale('en'), Locale('zh')],
+      path: 'assets/translations',
+      child: MyMaterialApp(),
+    ),
+  );
+}
+
+class MyMaterialApp extends StatelessWidget {
+  const MyMaterialApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      home: MyApp(),
+    );
+  }
 }
 
 class MyApp extends StatefulWidget {
@@ -24,6 +47,8 @@ class _MyAppState extends State<MyApp> {
       context,
       '/first_page',
     )..get();
+
+    _controller.addParse(TranslatedTextParser());
 
     _controller.stateStream.listen((state) {
       if (state is SharkWidgetState) {
