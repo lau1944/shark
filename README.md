@@ -22,6 +22,17 @@ you only need to modify the text widget to a button widget on the server, and th
 
 <img src="https://github.com/lau1944/shark/blob/dev/shark_diagram.png?raw=true" width="1000" >
 
+### Guide 
+
+* [Set Up](#how-to-use)
+* [Routing](#routing)
+* [Event](#click-event)
+* [Caching](#caching)
+* [Parsing](#parsing)
+* [Localization](#localization)
+* [Other](#other)
+* [Real World Sample](#real-world-sample)
+
 ## How to use
 
 First, `init` Shark library on main method on your application
@@ -211,7 +222,8 @@ https://shark-sample-server.herokuapp.com/
 
 
 
-### Real world sample (Promotion 😂)
+### Real world sample 
+(Promotion 😂)  
 
 My new meditation app had implemented `shark` recently, the `profile` page is handled by `shark` completely.
 
