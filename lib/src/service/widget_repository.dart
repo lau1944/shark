@@ -17,7 +17,8 @@ class WidgetRepository extends ServiceRepository {
           (value) => Result.success(data: value.data),
         )
         .catchError(
-          (err) => Result.error(exception: err,
+          (err) => Result.error(
+              exception: err,
               message: 'Error Occur while fetching UI components: $err'),
         );
   }
