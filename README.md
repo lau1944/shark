@@ -15,7 +15,7 @@ Simple use case of shark
 Let say you have a `text` widget, you specify it as json on the server return to the client,
 the client use shark to receive the text widget and show the UI successfully.
 
-After a while, you want to change the text widget to a `button`, instead of modify it on the client code and go through all the mobile app store update process,
+After a while, you want to change the text widget to a `button`, instead of modify it on the client code and go through all the mobile app store updating process,
 you only need to modify the text widget to a button widget on the server, and the shark client received it, showed the newest UI.
 
 ### Project diagram
@@ -49,6 +49,7 @@ First, `init` Shark library on main method on your application
 Second, set up UI widget
 
 * To be noticed, every thing related to widget is controlled by `SharkController`
+* `fromUrl` method would send a REST api request to your server, which indicates the path from your current url.
 * `get` method is where we send the request
 
 ``` dart
@@ -66,6 +67,7 @@ Second, set up UI widget
     return SharkWidget(controller: _controller);
   }
 ```
+
 
 To redirect to another page, call `redirect`
 
@@ -105,13 +107,13 @@ A sample event json format
     }
 ```
 
-`schema`: xxx://
+* `schema`: $yourschema://
   
   
-`path`: your_path
+* `path`: your_path
   
   
-`argument`: After the prefix '?' is the argument field.
+* `argument`: After the prefix '?' is the argument field.
 xxx=xxx, separate with `&`
   
 sample: 
@@ -129,17 +131,29 @@ Currently, there are 4 routing action
 
 Push a new route to `Navigator`
 
+  
 ** Please remember to specify `route path` on your route map
   
+```dart
+   MaterialApp(
+     onGenerateRoute: (RouteSettings settings) {
+        String routePath = settings.name?.toString() ?? '';
+        if (baseRoute.containsKey(routePath)) {
+          return MaterialPageRoute(
+              settings: settings, builder: your_route_table[routeName]!);
+        } else
+          return null;
+      },
+     home: $yourhomepage,
+   ),
   
-If not, navigator would throw an error
-then SharkController would try to navigator to a new default shark widget with the following path
+```  
 
-`pop`: prefix with `pop://`, internally would call `Navigator.pop(result)`
+* `pop`: prefix with `pop://`, internally would call `Navigator.pop(result)`
 
-`redirect`: prefix with `redirect://`, redirect current page with the following path
+* `redirect`: prefix with `redirect://`, redirect current page with the following path
 
-`link`: use `url_launcher` internally to open a url on browser, please visit [url_launcher](https://pub.dev/packages/url_launcher) to configure the detail requirements for each platform
+* `link`: use `url_launcher` internally to open a url on browser, please visit [url_launcher](https://pub.dev/packages/url_launcher) to configure the detail requirements for each platform
 
 
 
