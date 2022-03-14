@@ -4,12 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shark/shark.dart';
+import 'package:shark/src/core/share_error.dart';
 import 'package:shark/src/models/cache_strategy.dart';
 import 'package:shark/src/models/enum.dart';
 import 'package:shark/src/models/remote_config.dart';
+import 'package:shark/src/models/result.dart';
+import 'package:shark/src/service/service_repository.dart';
+import 'package:shark/src/service/widget_repository.dart';
 import 'package:shark/src/views/shark_controller.dart';
 
 import 'util.dart';
+import 'widget_json.dart';
 
 void main() {
   setUp(startServer);
@@ -32,14 +37,27 @@ void main() {
         });
   });
 
-  testWidgets('Render Widget test', (tester) async {
-    await tester.pumpWidget(
-      MaterialApp(
-        home: const _TestWidget(),
-      ),
-    );
+  group('networkTest', () {
+    test('apiClientTest', () async {
+      ServiceRepository repository = WidgetRepository();
+      final resultA = await repository.get('/first_page');
+      expect(resultA.runtimeType, Success);
+      expect((resultA as Success).data, firstPage);
 
-    await tester.pump();
+      final resultB = await repository.get('/second_page');
+      expect(resultB.runtimeType, Success);
+      expect((resultB as Success).data, secondPage);
+
+      final resultC = await repository.get('/error');
+      expect(resultC.runtimeType, Error);
+      try {
+        if (resultC is Error) {
+          SharkReport.throwSharkError(message: resultC.exception.toString());
+        }
+      } catch (e) {
+        expect(e.runtimeType, SharkError);
+      }
+    });
   });
 }
 
@@ -58,7 +76,7 @@ class __TestWidgetState extends State<_TestWidget> {
     _sharkController = SharkController.fromUrl(context, '/first_page');
     _sharkController.updateHeader(header: {'new_header': 'hello'});
     _sharkController.updateParam(params: {'new_param': 'param'});
-    _sharkController.get();
+    //_sharkController.get();
     _sharkController.stateStream.listen((state) {
       if (state == SharkWidgetState.success) {
         print(_sharkController.value);

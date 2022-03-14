@@ -52,6 +52,16 @@ Future<void> startServer() async {
         return;
       }
 
+      if (path == '/error') {
+        response
+          ..statusCode = 400;
+
+        Future.delayed(Duration(milliseconds: 500), () {
+          response.close();
+        });
+        return;
+      }
+
       var requestBodyBytes = await ByteStream(request).toBytes();
       var encodingName = request.uri.queryParameters['response-encoding'];
       var outputEncoding = encodingName == null

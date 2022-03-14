@@ -1,6 +1,6 @@
 name: shark
 description: A Flutter server rendering framework for mobile application, server-driven UI, dynamic change your interface in realtime
-version: 1.0.2
+version: 1.0.4
 repository: https://github.com/lau1944/shark
 
 environment:
@@ -12,10 +12,11 @@ dependencies:
     sdk: flutter
   dio: ^4.0.0
   device_info_plus: ^2.1.0
-  dynamic_widget: ^4.0.1
+  dynamic_widget: ^4.0.4
   dio_cache_interceptor: ^3.0.1
   path_provider: ^2.0.2
   url_launcher: ^6.0.9
+  easy_localization: ^3.0.0
 
 dev_dependencies:
   flutter_test:
